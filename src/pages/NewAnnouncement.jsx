@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../services/firebase";
 
 function NewAnnouncement() {
@@ -13,17 +18,31 @@ function NewAnnouncement() {
     }
 
     try {
-      await addDoc(collection(db, "announcements"), {
-        title,
-        message,
-        createdAt: serverTimestamp(),
-      });
+      // TEST: Verify admin can read device tokens
+      const tokenSnapshot = await getDocs(
+        collection(db, "deviceTokens")
+      );
+
+      console.log(
+        "Device Tokens Found:",
+        tokenSnapshot.size
+      );
+
+      await addDoc(
+        collection(db, "announcements"),
+        {
+          title,
+          message,
+          createdAt: serverTimestamp(),
+        }
+      );
 
       alert("Announcement published");
 
       setTitle("");
       setMessage("");
     } catch (error) {
+      console.error(error);
       alert(error.message);
     }
   };
@@ -36,14 +55,18 @@ function NewAnnouncement() {
         type="text"
         placeholder="Announcement Title"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) =>
+          setTitle(e.target.value)
+        }
       />
 
       <textarea
         className="announcement-textarea"
         placeholder="Announcement Message"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(e) =>
+          setMessage(e.target.value)
+        }
       />
 
       <button onClick={handleSave}>
