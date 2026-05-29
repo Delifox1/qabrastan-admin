@@ -1,5 +1,5 @@
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
 } from "react-router-dom";
@@ -19,7 +19,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
 
         <Route
@@ -58,20 +58,20 @@ function App() {
             path="/view-announcements"
             element={<ViewAnnouncements />}
           />
+
+          <Route
+            path="/edit-grave/:id"
+            element={<EditGrave />}
+          />
+
+          <Route
+            path="/edit-announcement/:id"
+            element={<EditAnnouncement />}
+          />
         </Route>
 
-        <Route
-          path="/edit-grave/:id"
-          element={<EditGrave />}
-        />
-
-        <Route
-          path="/edit-announcement/:id"
-          element={<EditAnnouncement />}
-        />
-
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
