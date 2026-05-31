@@ -74,7 +74,7 @@ function NewAnnouncement() {
 
   return (
     <div className="form-container">
-      <h1>New Announcement</h1>
+      <h1>New Announcement TEST 123</h1>
 
       <input
         type="text"
