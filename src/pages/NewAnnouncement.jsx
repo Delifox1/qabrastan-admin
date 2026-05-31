@@ -18,14 +18,17 @@ function NewAnnouncement() {
     }
 
     try {
-      // TEST: Verify admin can read device tokens
       const tokenSnapshot = await getDocs(
         collection(db, "deviceTokens")
       );
 
+      const tokens = tokenSnapshot.docs.map(
+        (doc) => doc.data().token
+      );
+
       console.log(
         "Device Tokens Found:",
-        tokenSnapshot.size
+        tokens.length
       );
 
       await addDoc(
@@ -37,7 +40,27 @@ function NewAnnouncement() {
         }
       );
 
-      alert("Announcement published");
+      if (tokens.length > 0) {
+        await fetch(
+          "https://cemetery-notifications-nxs8.vercel.app/api/sendNotification",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+            body: JSON.stringify({
+              title,
+              message,
+              tokens,
+            }),
+          }
+        );
+      }
+
+      alert(
+        "Announcement published successfully"
+      );
 
       setTitle("");
       setMessage("");
