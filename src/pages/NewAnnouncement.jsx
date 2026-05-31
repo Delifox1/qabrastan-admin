@@ -26,6 +26,8 @@ function NewAnnouncement() {
         (doc) => doc.data().token
       );
 
+      alert(`Tokens found: ${tokens.length}`);
+
       console.log(
         "Device Tokens Found:",
         tokens.length
