@@ -1,9 +1,11 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../services/firebase";
+import { useAuth } from "../context/AuthContext";
 
 function Layout() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -25,6 +27,19 @@ function Layout() {
             Dashboard
           </Link>
 
+          {user?.role ===
+            "super_admin" && (
+            <>
+              <Link to="/cemeteries">
+                Cemeteries
+              </Link>
+
+              <Link to="/admins">
+                Manage Admins
+              </Link>
+            </>
+          )}
+
           <Link to="/add-grave">
             Add Grave
           </Link>
@@ -40,6 +55,7 @@ function Layout() {
           <Link to="/view-announcements">
             View Announcements
           </Link>
+
 
           <button
             className="logout-btn"

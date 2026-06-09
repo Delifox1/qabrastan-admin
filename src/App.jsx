@@ -14,6 +14,9 @@ import ViewAnnouncements from "./pages/ViewAnnouncements";
 import LoginPage from "./pages/LoginPage";
 import EditGrave from "./pages/EditGrave";
 import EditAnnouncement from "./pages/EditAnnouncement";
+import ManageCemeteries from "./pages/ManageCemeteries";
+import ManageAdmins from "./pages/ManageAdmins";
+import SuperAdminRoute from "./components/SuperAdminRoute";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -67,6 +70,24 @@ function App() {
           <Route
             path="/edit-announcement/:id"
             element={<EditAnnouncement />}
+          />
+
+          <Route
+            path="/cemeteries"
+            element={
+              <SuperAdminRoute>
+                <ManageCemeteries />
+              </SuperAdminRoute>
+            }
+          />
+
+          <Route
+            path="/admins"
+            element={
+              <SuperAdminRoute>
+                <ManageAdmins />
+              </SuperAdminRoute>
+            }
           />
         </Route>
 

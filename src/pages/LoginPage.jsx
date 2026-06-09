@@ -1,44 +1,76 @@
-import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import {
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
+import {
+  useNavigate,
+} from "react-router-dom";
+
 import { auth } from "../services/firebase";
 
+import {
+  useAuth,
+} from "../context/AuthContext";
+
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] =
+    useState("");
 
-  const navigate = useNavigate();
+  const [password, setPassword] =
+    useState("");
 
-  const handleLogin = async () => {
-    try {
-      setLoading(true);
+  const [loading, setLoading] =
+    useState(false);
 
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+  const navigate =
+    useNavigate();
 
+  const { user } =
+    useAuth();
+
+  useEffect(() => {
+    if (user) {
       navigate("/");
-    } catch (error) {
-      alert(error.message);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [user, navigate]);
+
+  const handleLogin =
+    async () => {
+      try {
+        setLoading(true);
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+      } catch (error) {
+        alert(
+          error.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Qabrastan Admin</h1>
+        <h1>
+          Qabrastan Admin
+        </h1>
 
         <input
           type="email"
           placeholder="Email Address"
           value={email}
           onChange={(e) =>
-            setEmail(e.target.value)
+            setEmail(
+              e.target.value
+            )
           }
         />
 
@@ -47,11 +79,17 @@ function LoginPage() {
           placeholder="Password"
           value={password}
           onChange={(e) =>
-            setPassword(e.target.value)
+            setPassword(
+              e.target.value
+            )
           }
         />
 
-        <button onClick={handleLogin}>
+        <button
+          onClick={
+            handleLogin
+          }
+        >
           {loading
             ? "Signing In..."
             : "Login"}

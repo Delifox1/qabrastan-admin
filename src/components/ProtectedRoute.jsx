@@ -1,11 +1,39 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-function ProtectedRoute({ children }) {
-  const { user } = useAuth();
+function ProtectedRoute({
+  children,
+}) {
+  const {
+    user,
+    loading,
+  } = useAuth();
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          padding: "40px",
+          textAlign: "center",
+        }}
+      >
+        Loading...
+      </div>
+    );
+  }
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return (
+      <Navigate to="/login" />
+    );
+  }
+
+  if (
+    user.active === false
+  ) {
+    return (
+      <Navigate to="/login" />
+    );
   }
 
   return children;
